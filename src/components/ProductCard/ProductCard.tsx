@@ -3,9 +3,11 @@ import { FaCartPlus } from "react-icons/fa";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function ProductCard({ item }) {
   const [liked, setLiked] = useState(false);
+  const navigate = useNavigate();
 
   const handleLikeClick = () => {
     setLiked(!liked);
@@ -51,15 +53,22 @@ function ProductCard({ item }) {
     <div className="container mt-5">
       <div className="card" style={{ width: "18rem" }}>
         <div className="card-body">
-          <h5 className="card-title">
+          <div style={{ width: "250px", height: "250px" }} className="bg-light">
+            <img
+              src="https://img.freepik.com/free-vector/hand-drawn-running-shoes-cartoon-illustration_23-2150961844.jpg"
+              className="img-fluid"
+              alt="Product Image"
+            />
+          </div>
+          <br />
+          <h4 className="card-title">
             <a
               href="../item-details"
               style={{ color: "black", textDecoration: "none" }}
             >
               {item.name}
             </a>
-          </h5>
-          <p className="card-text">Image should be placed here.</p>
+          </h4>
           <div className="d-flex align-items-center">
             <h4 style={{ marginRight: "10px" }}>
               RM{" "}

@@ -54,46 +54,54 @@ function Login() {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      <div className="card " style={{ width: "18rem" }}>
-        <div className="card-body">
-          <h5 className="card-title">Log In</h5>
-          <input
-            id="usernameInput"
-            value={username}
-            placeholder="Email"
-            onChange={(e) => setName(e.target.value)}
-            className={"inputBox"}
-          />
-          <br />
-          <input
-            id="passwordInput"
-            value={password}
-            placeholder="Password"
-            type="password"
-            onChange={(ev) => setPassword(ev.target.value)}
-            className={"inputBox"}
-          />
-          <br />
-          {/* <p className="card-text">
+    <div className="w-100 bg-light">
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="card " style={{ width: "24rem" }}>
+          <div className="card-body">
+            <div className="w-100 d-flex justify-content-center">
+              <h3 className="card-title">Log In</h3>
+            </div>
+            <br />
+            <input
+              id="usernameInput"
+              value={username}
+              placeholder="Email"
+              onChange={(e) => setName(e.target.value)}
+              className="form-control form-control-lg"
+              required
+            />
+            <br />
+            <input
+              id="passwordInput"
+              value={password}
+              placeholder="Password"
+              type="password"
+              onChange={(ev) => setPassword(ev.target.value)}
+              className="form-control form-control-lg"
+              required
+            />
+            <br />
+            <br />
+            {/* <p className="card-text">
             Some quick example text to build on the card title and make up the
             bulk of the card's content.
           </p> */}
-          {/* <a href="#" className="btn btn-primary">
+            {/* <a href="#" className="btn btn-primary">
             Go somewhere
           </a> */}
-          <input
-            className={"inputButton btn btn-primary"}
-            type="button"
-            onClick={() => onLogin()}
-            value={"Log in"}
-          />
-          {response && (
-            <div>
-              <h2>Response from API:</h2>
-              <pre>{JSON.stringify(response, null, 2)}</pre>
-            </div>
-          )}
+            <input
+              className={"inputButton btn btn-primary btn-lg w-100"}
+              type="button"
+              onClick={() => onLogin()}
+              value={"Log in"}
+            />
+            {response && (
+              <div>
+                <h2>Response from API:</h2>
+                <pre>{JSON.stringify(response, null, 2)}</pre>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

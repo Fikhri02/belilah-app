@@ -22,14 +22,19 @@ function MainMenu() {
 
   return (
     <>
-      <NavBar />
       {/* <h1>Main Menu</h1> */}
+      <NavBar />
+      <div className="text-center">
+        <h2>Products</h2>
+      </div>
       <div
+        className="bg-light"
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(5, 1fr)", // Creates 5 equal columns
-          gap: "10px", // Adds space between the grid items
+          gap: "0px", // Adds space between the grid items
           overflowX: "auto", // Enable horizontal scroll if necessary
+          padding: "30px 0px",
         }}
       >
         {items.map((item) => (

@@ -27,11 +27,13 @@ function ItemMainContainer() {
         <div className="container">
           <div className="row">
             <div className="col-md-6 border bg-blue">
-              <h2>This is supposed to be the image container.</h2>
-              <h2>This is supposed to be the image container.</h2>
-              <h2>This is supposed to be the image container.</h2>
-              <h2>This is supposed to be the image container.</h2>
-              <h2>This is supposed to be the image container.</h2>
+              <div className="bg-light">
+                <img
+                  src="https://img.freepik.com/free-vector/hand-drawn-running-shoes-cartoon-illustration_23-2150961844.jpg"
+                  className="img-fluid"
+                  alt="Product Image"
+                />
+              </div>
             </div>
             <div className="col-md-6 border bg-blue">
               <h1>Title of the Item.</h1>
@@ -46,17 +48,26 @@ function ItemMainContainer() {
               <hr />
               <h2 style={{ color: "blue" }}>RM 200.00</h2>
               <hr />
-              <h4>Quantity:</h4>
-              <div style={{ margin: "20px 10px" }}>
-                <QuantityBox />
+              <div className="d-flex" style={{ margin: "20px 10px" }}>
+                <h4>Quantity </h4>
+                <div className="col-md-5 mx-5">
+                  <QuantityBox />
+                </div>
               </div>
               <div className="row" style={{ margin: "10px 0px" }}>
-                <div className="col-md-3">
-                  <button className="btn btn-primary" style={{ width: "100%" }}>
+                <div className="col-md-5">
+                  <button
+                    className="btn btn-warning"
+                    style={{
+                      width: "100%",
+                      color: "white",
+                      backgroundColor: "orange",
+                    }}
+                  >
                     Buy Now
                   </button>
                 </div>
-                <div className="col-md-3">
+                <div className="col-md-5">
                   <button className="btn btn-primary" style={{ width: "100%" }}>
                     Add to Cart
                   </button>
