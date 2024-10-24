@@ -1,9 +1,11 @@
 import React from "react";
 import { FaHome, FaSearch } from "react-icons/fa";
 import { IoIosCart } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function NavBar() {
+  const navigate = useNavigate();
+
   return (
     <nav
       className="navbar navbar-expand-lg bg-body-tertiary"
@@ -18,6 +20,7 @@ function NavBar() {
           aria-controls="navbarNavAltMarkup"
           aria-expanded="false"
           aria-label="Toggle navigation"
+          onClick={() => navigate("/main-menu")}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -25,14 +28,17 @@ function NavBar() {
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav">
             <a className="nav-link active" aria-current="page" href="#">
-              <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+              <Link
+                to="/main-menu"
+                style={{ textDecoration: "none", color: "black" }}
+              >
                 <FaHome />
               </Link>
             </a>
-            <a className="nav-link" href="#">
+            <a className="nav-link" onClick={() => navigate("/login")}>
               Login
             </a>
-            <a className="nav-link" href="#">
+            <a className="nav-link" onClick={() => navigate("/register")}>
               Register
             </a>
             <a className="nav-link disabled" aria-disabled="true">
@@ -64,6 +70,7 @@ function NavBar() {
           <button
             className="btn btn-outline-secondary"
             style={{ width: "100px", height: "40px" }}
+            onClick={() => navigate("/cart")}
           >
             <IoIosCart />
           </button>

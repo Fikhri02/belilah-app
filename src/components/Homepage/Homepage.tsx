@@ -50,7 +50,7 @@ function Login() {
     //   setResponse("error"); // Save the response data to the state
     // }
 
-    navigate("main-menu");
+    navigate("/main-menu");
   };
 
   return (

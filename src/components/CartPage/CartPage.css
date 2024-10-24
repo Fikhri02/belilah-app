@@ -1,0 +1,13 @@
+   /* Custom styles to remove vertical lines */
+   .table-no-vertical-lines th, 
+   .table-no-vertical-lines td {
+     border-left: none !important;  /* Remove left borders */
+     border-right: none !important; /* Remove right borders */
+   }
+
+   /* Keeping only the horizontal lines */
+   .table-no-vertical-lines th,
+   .table-no-vertical-lines td {
+     border-top: 1px solid #dee2e6;
+     border-bottom: 1px solid #dee2e6;
+   }

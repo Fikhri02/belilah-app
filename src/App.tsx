@@ -6,6 +6,7 @@ import Homepage from "./components/Homepage/Homepage";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import MainMenu from "./components/MainMenu/MainMenu";
 import ItemPage from "./components/ItemPage/ItemPage";
+import CartPage from "./components/CartPage/CartPage";
 function App() {
   const items = ["New York", "San Francisco", "Tokyo", "London", "Paris"];
   const handleSelectItem = (item: string) => {
@@ -15,9 +16,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Homepage />} />
+        <Route path="/login" element={<Homepage />} />
         <Route path="/main-menu" element={<MainMenu />} />
         <Route path="/item-details" element={<ItemPage />} />
+        <Route path="/cart" element={<CartPage />} />
       </Routes>
     </Router>
   );
