@@ -35,10 +35,18 @@ function NavBar() {
                 <FaHome />
               </Link>
             </a>
-            <a className="nav-link" onClick={() => navigate("/login")}>
+            <a
+              className="nav-link"
+              onClick={() => navigate("/login")}
+              style={{ cursor: "pointer" }}
+            >
               Login
             </a>
-            <a className="nav-link" onClick={() => navigate("/register")}>
+            <a
+              className="nav-link"
+              onClick={() => navigate("/register")}
+              style={{ cursor: "pointer" }}
+            >
               Register
             </a>
             <a className="nav-link disabled" aria-disabled="true">
