@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import NavBar from "../NavBar/NavBar";
 import Footer from "../Footer/Footer";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import PopupDialog from "../PopupDialog/PopupDialog";
 
 function RegisterPage() {
   return (
@@ -20,6 +23,36 @@ function Register() {
   const [lname, setLname] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
+  const [response, setResponse] = useState(String || null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  const navigate = useNavigate();
+
+  const onRegister = async () => {
+    const data = {
+      email: email,
+      firstName: fname,
+      lastName: lname,
+      password: password,
+      rePassword: rePassword,
+    };
+
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/api/v1/users/register",
+        data
+      );
+      openModal();
+      setResponse(res.data); // Save the response data to the state
+    } catch (error) {
+      console.error("Error:", error);
+      setResponse("error"); // Save the response data to the state
+    }
+  };
+
   return (
     <>
       <div className="w-100 bg-light vh-100">
@@ -37,7 +70,7 @@ function Register() {
           <div className="card " style={{ width: "24rem" }}>
             <div className="card-body">
               <div className="w-100 d-flex justify-content-center">
-                <h3 className="card-title">Register</h3>
+                {/* <h3 className="card-title">Register</h3> */}
               </div>
               <form>
                 <input
@@ -89,14 +122,26 @@ function Register() {
                   required
                 />
                 <br />
+                <p>
+                  By signing up you agree to our Terms of use and Privacy
+                  Policy.
+                </p>
                 <br />
                 <input
                   className={"inputButton btn btn-info btn-lg w-100"}
                   type="button"
-                  onClick={() => {}}
-                  value={"Register"}
+                  onClick={onRegister}
+                  value="Register"
+                  style={{ color: "white" }}
                 />
               </form>
+              <br />
+              <p>
+                Already have an account?{" "}
+                <a>
+                  <Link to="/login">Login</Link>
+                </a>
+              </p>
             </div>
           </div>
         </div>
