@@ -4,6 +4,8 @@ import Footer from "../Footer/Footer";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import PopupDialog from "../PopupDialog/PopupDialog";
+import "./RegisterPage.css";
+import { SiTicktick } from "react-icons/si";
 
 function RegisterPage() {
   return (
@@ -25,10 +27,8 @@ function Register() {
   const [rePassword, setRePassword] = useState("");
   const [response, setResponse] = useState(String || null);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modal, setModal] = useState(false);
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
   const navigate = useNavigate();
 
   const onRegister = async () => {
@@ -45,7 +45,7 @@ function Register() {
         "http://localhost:8080/api/v1/users/register",
         data
       );
-      openModal();
+      setModal(!modal);
       setResponse(res.data); // Save the response data to the state
     } catch (error) {
       console.error("Error:", error);
@@ -145,6 +145,30 @@ function Register() {
             </div>
           </div>
         </div>
+        {modal && (
+          <div className="overlay">
+            <div className="">
+              <div className="modal-content">
+                <div className="w-100 bg-light">
+                  <br />
+                  <div className="d-flex justify-content-center">
+                    <SiTicktick size={60} color="green" />
+                  </div>
+                  <br />
+                  <div className="d-flex justify-content-center">
+                    <p>Successfully registered user.</p>
+                  </div>
+                </div>
+                <button
+                  className="btn btn-success"
+                  onClick={() => navigate("/main-menu")}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
