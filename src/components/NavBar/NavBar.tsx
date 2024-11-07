@@ -1,10 +1,56 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { FaHome, FaSearch } from "react-icons/fa";
 import { IoIosCart } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
+import Item from "../ProductCard/Item";
+
+const getUserData = () => {
+  const user = localStorage.getItem("user");
+  return user ? JSON.parse(user) : null;
+};
+
+const getCarts = async (user): Promise<Item[]> => {
+  const [items, setItems] = useState<Item[]>([]);
+
+  try {
+    const res = await axios.post(
+      "http://localhost:8080/api/v1/users/get-cart",
+      user
+    );
+    console.log("carts");
+    console.log(res.data);
+    res.data.carts.map(
+      (obj) =>
+        new Item(
+          obj.code,
+          obj.description,
+          obj.unitPrice,
+          obj.averageReview,
+          obj.reviewCount,
+          obj.imageUrl
+        )
+    );
+
+    return res.data.carts;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+  return [];
+};
 
 function NavBar() {
   const navigate = useNavigate();
+
+  var user = getUserData();
+
+  const [items, setItems] = useState<Item[]>([]);
+
+  // getCarts(user).then((result) => {
+  //   setItems(result);
+  //   console.log("result");
+  //   console.log(result);
+  // });
 
   return (
     <nav
@@ -35,20 +81,27 @@ function NavBar() {
                 <FaHome />
               </Link>
             </a>
-            <a
-              className="nav-link"
-              onClick={() => navigate("/login")}
-              style={{ cursor: "pointer" }}
-            >
-              Login
-            </a>
-            <a
-              className="nav-link"
-              onClick={() => navigate("/register")}
-              style={{ cursor: "pointer" }}
-            >
-              Register
-            </a>
+            {user ? (
+              <a className="nav-link">Welcome, {user.fullname}</a>
+            ) : (
+              <>
+                <a
+                  className="nav-link"
+                  onClick={() => navigate("/login")}
+                  style={{ cursor: "pointer" }}
+                >
+                  Login
+                </a>
+                <a
+                  className="nav-link"
+                  onClick={() => navigate("/register")}
+                  style={{ cursor: "pointer" }}
+                >
+                  Register
+                </a>
+              </>
+            )}
+
             <a className="nav-link disabled" aria-disabled="true">
               Feedback
             </a>

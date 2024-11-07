@@ -3,13 +3,20 @@ import NavBar from "../NavBar/NavBar";
 import { FaStar } from "react-icons/fa";
 import { CiStar } from "react-icons/ci";
 import Footer from "../Footer/Footer";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { SiTicktick } from "react-icons/si";
+import { GiCancel } from "react-icons/gi";
 
 function ItemPage() {
+  const location = useLocation();
+  const { item } = location.state || {};
+
   return (
     <>
       <NavBar />
       {/* <h1>Item Page</h1> */}
-      <ItemMainContainer />
+      <ItemMainContainer item={item} />
       <Footer />
     </>
   );
@@ -17,9 +24,43 @@ function ItemPage() {
 
 export default ItemPage;
 
-function ItemMainContainer() {
+const getUserData = () => {
+  const user = localStorage.getItem("user");
+  return user ? JSON.parse(user) : null;
+};
+
+function ItemMainContainer({ item }) {
   const options = ["Option 1", "Option 2", "Option 3"];
   const rating = 3;
+  const [quantity, setQuantity] = useState(1);
+  const [modal, setModal] = useState(false);
+  const [failedmodal, setFailedModal] = useState(false);
+
+  const navigate = useNavigate();
+
+  var user = getUserData();
+
+  const addToCart = async (itemId) => {
+    const data = [
+      {
+        id: { itemId: itemId, userId: user.id },
+        quantity: quantity,
+      },
+    ];
+
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/api/v1/carts/upsert-carts",
+        data
+      );
+
+      console.log("Added to cart");
+      setModal(true);
+    } catch (error) {
+      setFailedModal(true);
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <div className="d-flex justify-content-center">
@@ -29,29 +70,37 @@ function ItemMainContainer() {
             <div className="col-md-6 border bg-blue">
               <div className="bg-light">
                 <img
-                  src="https://img.freepik.com/free-vector/hand-drawn-running-shoes-cartoon-illustration_23-2150961844.jpg"
+                  src={item.imageUrl}
                   className="img-fluid"
                   alt="Product Image"
                 />
               </div>
             </div>
             <div className="col-md-6 border bg-blue">
-              <h1>Title of the Item.</h1>
+              <h1>{item.name}</h1>
               <p>This is an item that will be sold.</p>
-              {Array.from({ length: rating }, (_, i) => (
+              {Array.from({ length: item.rating }, (_, i) => (
                 <FaStar key={i} color="orange" size={20} />
               ))}
-              {Array.from({ length: 5 - rating }, (_, i) => (
+              {Array.from({ length: 5 - item.rating }, (_, i) => (
                 <CiStar key={i} color="orange" size={20} />
               ))}
-              <p>4742 ratings</p>
+              <p>{item.ratingCounts} ratings</p>
               <hr />
-              <h2 style={{ color: "blue" }}>RM 200.00</h2>
+              <h2 style={{ color: "blue" }}>
+                {" "}
+                RM{" "}
+                {new Intl.NumberFormat("en-MY", {
+                  style: "decimal",
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(item.unitPrice)}
+              </h2>
               <hr />
               <div className="d-flex" style={{ margin: "20px 10px" }}>
                 <h4>Quantity </h4>
                 <div className="col-md-5 mx-5">
-                  <QuantityBox />
+                  <QuantityBox quantity={quantity} setQuantity={setQuantity} />
                 </div>
               </div>
               <div className="row" style={{ margin: "10px 0px" }}>
@@ -68,7 +117,15 @@ function ItemMainContainer() {
                   </button>
                 </div>
                 <div className="col-md-5">
-                  <button className="btn btn-primary" style={{ width: "100%" }}>
+                  <button
+                    className="btn btn-primary"
+                    style={{ width: "100%" }}
+                    onClick={() => {
+                      console.log(item);
+                      console.log(user);
+                      addToCart(item.id);
+                    }}
+                  >
                     Add to Cart
                   </button>
                 </div>
@@ -147,12 +204,60 @@ function ItemMainContainer() {
           </div>
         </div>
       </div>
+      {modal && (
+        <div className="overlay">
+          <div className="">
+            <div className="modal-content">
+              <div className="w-100 bg-light">
+                <br />
+                <div className="d-flex justify-content-center">
+                  <SiTicktick size={60} color="green" />
+                </div>
+                <br />
+                <div className="d-flex justify-content-center">
+                  <p>Successfully add to cart.</p>
+                </div>
+              </div>
+              <button
+                className="btn btn-success"
+                onClick={() => setModal(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {failedmodal && (
+        <div className="overlay">
+          <div className="">
+            <div className="modal-content">
+              <div className="w-100 bg-light">
+                <br />
+                <div className="d-flex justify-content-center">
+                  <GiCancel size={60} color="red" />
+                </div>
+                <br />
+                <div className="d-flex justify-content-center">
+                  <p>Failed to add to cart. Please retry</p>
+                </div>
+              </div>
+              <button
+                className="btn btn-danger"
+                onClick={() => setFailedModal(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-function QuantityBox() {
-  const [quantity, setQuantity] = useState(1); // State to store the quantity value
+function QuantityBox({ quantity, setQuantity }) {
+  // const [quantity, setQuantity] = useState(1); // State to store the quantity value
 
   // Handle increment
   const handleIncrement = () => {
