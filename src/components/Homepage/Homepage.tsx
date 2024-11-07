@@ -31,25 +31,25 @@ function Login() {
   const navigate = useNavigate();
 
   const onLogin = async () => {
-    // const data = {
-    //   fullname: username,
-    //   password: password,
-    // };
+    const data = {
+      email: username,
+      password: password,
+    };
 
-    // console.log(username);
-    // console.log(password);
-
-    // try {
-    //   const res = await axios.post(
-    //     "http://localhost:8080/api/v1/users/verify",
-    //     data
-    //   );
-    //   setResponse(res.data); // Save the response data to the state
-    // } catch (error) {
-    //   console.error("Error:", error);
-    //   setResponse("error"); // Save the response data to the state
-    // }
-
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/api/v1/users/verify",
+        data
+      );
+      // setResponse(res.data); // Save the response data to the state
+      setResponse(""); // Save the response data to the state
+      localStorage.setItem("user", JSON.stringify(res.data));
+      console.log(res.data);
+    } catch (error) {
+      console.error("Error:", error);
+      setResponse("Invalid username or password."); // Save the response data to the state
+      return;
+    }
     navigate("/main-menu");
   };
 
@@ -97,8 +97,9 @@ function Login() {
             />
             {response && (
               <div>
-                <h2>Response from API:</h2>
-                <pre>{JSON.stringify(response, null, 2)}</pre>
+                {/* <h2>Response from API:</h2> */}
+                {/* <pre>{JSON.stringify(response, null, 2)}</pre> */}
+                <h6 style={{ color: "red" }}>{response}</h6>
               </div>
             )}
           </div>

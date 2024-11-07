@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "../NavBar/NavBar";
 import "./CartPage.css";
 import { MdCancel } from "react-icons/md";
 import Footer from "../Footer/Footer";
+import Item from "../ProductCard/Item";
+import axios from "axios";
+import CartItems from "./CartItems";
 
 const CartPage = () => {
   return (
@@ -19,33 +22,62 @@ const CartPage = () => {
 
 export default CartPage;
 
+const getUserData = () => {
+  const user = localStorage.getItem("user");
+  return user ? JSON.parse(user) : null;
+};
+
 const Cart = () => {
-  // Sample cart items (you would normally fetch this from an API or state)
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: "Product 1", price: 100, quantity: 1 },
-    { id: 2, name: "Product 2", price: 150, quantity: 2 },
-    { id: 3, name: "Product 3", price: 200, quantity: 1 },
-  ]);
+  const [cartItems, setCartItems] = useState<CartItems[]>([]);
+
+  // Fetch cart items
+  const getCarts = async (user): Promise<CartItems[]> => {
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/api/v1/users/get-cart",
+        user
+      );
+      const carts = res.data.carts.map(
+        (obj, index) =>
+          new CartItems(
+            index,
+            obj.quantity,
+            new Item(
+              obj.items.id,
+              obj.items.code,
+              obj.items.description,
+              obj.items.unitPrice,
+              obj.items.averageReview,
+              obj.items.reviewCount,
+              obj.items.imageUrl
+            )
+          )
+      );
+      return carts;
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+      return [];
+    }
+  };
+
+  // Fetch cart items on component mount
+  useEffect(() => {
+    const user = getUserData(); // Assume this function retrieves the user data
+    getCarts(user).then((carts) => setCartItems(carts));
+  }, []);
 
   // Handle quantity change
-  const handleQuantityChange = (id, newQuantity) => {
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
+  const handleQuantityChange = (id: number, newQuantity: number) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item, index) =>
+        index === id ? new CartItems(newQuantity, item.item) : item
       )
     );
   };
-
   // Handle item removal
   const handleRemoveItem = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
-  };
-
-  // Calculate total price
-  const getTotalPrice = () => {
-    return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
+    setCartItems((prevItems) =>
+      prevItems.filter((item) => item.item.id !== id)
     );
   };
 
@@ -88,7 +120,7 @@ const Cart = () => {
                           className="d-flex align-items-center justify-content-center"
                         >
                           <img
-                            src="https://img.freepik.com/free-vector/hand-drawn-running-shoes-cartoon-illustration_23-2150961844.jpg"
+                            src={item.item.imageUrl}
                             className="img-fluid"
                             alt="Product Image"
                           />
@@ -97,7 +129,7 @@ const Cart = () => {
                           style={{ height: "200px", width: "250px" }}
                           className="d-flex align-items-center justify-content-center"
                         >
-                          {item.name}
+                          {item.item.name}
                         </div>
                       </div>
                     </td>
@@ -106,7 +138,7 @@ const Cart = () => {
                         style={{ height: "200px" }}
                         className="d-flex align-items-center justify-content-center"
                       >
-                        ${item.price.toFixed(2)}
+                        RM {item.item.unitPrice.toFixed(2)}
                       </div>
                     </td>
                     <td>
@@ -133,7 +165,7 @@ const Cart = () => {
                         style={{ height: "200px" }}
                         className="d-flex align-items-center justify-content-center"
                       >
-                        ${(item.price * item.quantity).toFixed(2)}
+                        RM {(item.item.unitPrice * item.quantity).toFixed(2)}
                       </div>
                     </td>
                     <td>
@@ -158,7 +190,7 @@ const Cart = () => {
             </table>
 
             <div className="text-right">
-              <h4>Total Price: ${getTotalPrice().toFixed(2)}</h4>
+              {/* <h4>Total Price: ${getTotalPrice().toFixed(2)}</h4> */}
               <button className="btn btn-success mt-2">
                 Proceed to Checkout
               </button>

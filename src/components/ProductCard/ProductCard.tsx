@@ -13,6 +13,10 @@ function ProductCard({ item }) {
     setLiked(!liked);
   };
 
+  const navToProduct = () => {
+    navigate("/item-details", { state: { item } });
+  };
+
   return (
     // <div className="product-card">
     //   <div className="product-header">
@@ -55,7 +59,7 @@ function ProductCard({ item }) {
         <div className="card-body">
           <div style={{ width: "250px", height: "250px" }} className="bg-light">
             <img
-              src="https://img.freepik.com/free-vector/hand-drawn-running-shoes-cartoon-illustration_23-2150961844.jpg"
+              src={item.imageUrl}
               className="img-fluid"
               alt="Product Image"
             />
@@ -63,8 +67,12 @@ function ProductCard({ item }) {
           <br />
           <h4 className="card-title">
             <a
-              href="../item-details"
-              style={{ color: "black", textDecoration: "none" }}
+              onClick={navToProduct} // No parentheses here
+              style={{
+                color: "black",
+                textDecoration: "none",
+                cursor: "pointer",
+              }}
             >
               {item.name}
             </a>

@@ -6,6 +6,7 @@ import axios from "axios";
 import PopupDialog from "../PopupDialog/PopupDialog";
 import "./RegisterPage.css";
 import { SiTicktick } from "react-icons/si";
+import { BiSolidError } from "react-icons/bi";
 
 function RegisterPage() {
   return (
@@ -31,7 +32,9 @@ function Register() {
 
   const navigate = useNavigate();
 
-  const onRegister = async () => {
+  const onRegister = async (event) => {
+    event.preventDefault();
+
     const data = {
       email: email,
       firstName: fname,
@@ -72,7 +75,7 @@ function Register() {
               <div className="w-100 d-flex justify-content-center">
                 {/* <h3 className="card-title">Register</h3> */}
               </div>
-              <form>
+              <form onSubmit={onRegister}>
                 <input
                   id="usernameInput"
                   value={email}
@@ -127,13 +130,13 @@ function Register() {
                   Policy.
                 </p>
                 <br />
-                <input
+                <button
                   className={"inputButton btn btn-info btn-lg w-100"}
-                  type="button"
-                  onClick={onRegister}
-                  value="Register"
+                  type="submit"
                   style={{ color: "white" }}
-                />
+                >
+                  Register
+                </button>
               </form>
               <br />
               <p>
@@ -169,6 +172,31 @@ function Register() {
             </div>
           </div>
         )}
+
+        {/* {modal && (
+          <div className="overlay">
+            <div className="">
+              <div className="modal-content">
+                <div className="w-100 bg-light">
+                  <br />
+                  <div className="d-flex justify-content-center">
+                    <BiSolidError size={60} color="red" />
+                  </div>
+                  <br />
+                  <div className="d-flex justify-content-center">
+                    <p>Failed to register user.</p>
+                  </div>
+                </div>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => setModal(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )} */}
       </div>
     </>
   );
