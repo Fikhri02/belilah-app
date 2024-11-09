@@ -1,41 +1,88 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProductCard from "../ProductCard/ProductCard";
-import Item from "../ProductCard/Item";
 import NavBar from "../NavBar/NavBar";
 import Footer from "../Footer/Footer";
+import { useLocation } from "react-router-dom";
+import { Spinner } from "react-bootstrap"; // Import Bootstrap spinner for loading
 
 function MainMenu({ items }) {
-  // const [items, setItems] = useState<Item[]>([]);
-  const [response, setResponse] = useState(String || null);
+  const [products, setProducts] = useState(items || []);
+  const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
+  const itemsData = location.state;
 
-  // const fetchItems = async (event) => {
-  // event.preventDefault();
-  // };
-
-  // fetchItems(event);
+  useEffect(() => {
+    if (itemsData != null) {
+      setProducts(itemsData);
+    }
+    setIsLoading(false);
+  }, [itemsData]);
 
   return (
     <>
-      {/* <h1>Main Menu</h1> */}
       <NavBar />
-      <div className="text-center">
-        <h2>Products</h2>
-      </div>
       <div
-        className="bg-light"
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(5, 1fr)", // Creates 5 equal columns
-          gap: "0px", // Adds space between the grid items
-          overflowX: "auto", // Enable horizontal scroll if necessary
-          padding: "30px 0px",
+          background: "linear-gradient(to right, #f8f9fa, #e9ecef)",
+          padding: "40px 0",
+          textAlign: "center",
+          color: "#333",
         }}
       >
-        {items.map((item) => (
-          <ProductCard key={item.id} item={item} />
-        ))}
+        <h2
+          style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#2d2d2d" }}
+        >
+          Our Products
+        </h2>
+        <p style={{ fontSize: "1rem", color: "#666" }}>
+          Discover our range of top-quality products.
+        </p>
       </div>
+
+      <div className="container mt-5">
+        {isLoading ? (
+          <div className="text-center mt-4">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </div>
+        ) : products.length === 0 ? (
+          <div className="text-center mt-4">
+            <h5>No results found.</h5>
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+              gap: "20px",
+              padding: "20px",
+            }}
+          >
+            {products.map((item) => (
+              <div
+                key={item.id}
+                style={{
+                  transition: "transform 0.3s, box-shadow 0.3s",
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "scale(1.05)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "scale(1)")
+                }
+              >
+                <ProductCard item={item} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       <Footer />
     </>
   );

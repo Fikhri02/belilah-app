@@ -7,6 +7,7 @@ import Footer from "../Footer/Footer";
 import Item from "../ProductCard/Item";
 import axios from "axios";
 import CartItems from "./CartItems";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   return (
@@ -28,6 +29,12 @@ const getUserData = () => {
 };
 
 const Cart = () => {
+  const navigate = useNavigate();
+
+  const goToCheckout = () => {
+    navigate("/checkout");
+  };
+
   const [cartItems, setCartItems] = useState<CartItems[]>([]);
 
   // Fetch cart items
@@ -67,18 +74,47 @@ const Cart = () => {
   }, []);
 
   // Handle quantity change
-  const handleQuantityChange = (id: number, newQuantity: number) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item, index) =>
-        index === id ? new CartItems(newQuantity, item.item) : item
+  const handleQuantityChange = async (id: number, newQuantity: number) => {
+    const user = getUserData();
+    setCartItems((item) =>
+      item.map((item) =>
+        item.item.id === id ? new CartItems(id, newQuantity, item.item) : item
       )
     );
+
+    const data = [
+      {
+        id: { itemId: id, userId: user.id },
+        quantity: newQuantity,
+      },
+    ];
+
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/api/v1/carts/upsert-carts",
+        data
+      );
+
+      console.log("Added to cart");
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
   // Handle item removal
-  const handleRemoveItem = (id) => {
-    setCartItems((prevItems) =>
-      prevItems.filter((item) => item.item.id !== id)
-    );
+  const handleRemoveItem = async (itemId) => {
+    // setCartItems((prevItems) =>
+    //   prevItems.filter((item) => item.item.id !== id)
+    // );
+    try {
+      const user = getUserData();
+      const res = await axios.delete(
+        `http://localhost:8080/api/v1/carts/delete-by-key/${itemId}/${user.id}`
+      );
+      window.location.reload();
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+      return [];
+    }
   };
 
   return (
@@ -108,10 +144,10 @@ const Cart = () => {
                       style={{ height: "200px" }}
                       className="d-flex align-items-center justify-content-center"
                     >
-                      <input
+                      {/* <input
                         type="checkbox"
                         style={{ cursor: "pointer", fontSize: "30px" }}
-                      ></input>
+                      ></input> */}
                     </div>
                     <td>
                       <div className="row" style={{ height: "200px" }}>
@@ -153,7 +189,7 @@ const Cart = () => {
                           className="form-control"
                           onChange={(e) =>
                             handleQuantityChange(
-                              item.id,
+                              item.item.id,
                               parseInt(e.target.value)
                             )
                           }
@@ -174,7 +210,7 @@ const Cart = () => {
                         className="d-flex align-items-center justify-content-center"
                       >
                         <MdCancel
-                          onClick={() => handleRemoveItem(item.id)}
+                          onClick={() => handleRemoveItem(item.item.id)}
                           style={{
                             cursor: "pointer",
                             color: "red",
@@ -191,7 +227,11 @@ const Cart = () => {
 
             <div className="text-right">
               {/* <h4>Total Price: ${getTotalPrice().toFixed(2)}</h4> */}
-              <button className="btn btn-success mt-2">
+              <button
+                className="btn btn-success mt-2"
+                onClick={goToCheckout}
+                style={{ width: "100%" }}
+              >
                 Proceed to Checkout
               </button>
             </div>

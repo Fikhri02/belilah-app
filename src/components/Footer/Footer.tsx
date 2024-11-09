@@ -2,7 +2,10 @@ import React from "react";
 
 function Footer() {
   return (
-    <footer className="bg-dark text-light py-4 mt-auto">
+    <footer
+      style={{ backgroundColor: "#f8f9fa", color: "#343a40" }}
+      className="py-4 mt-auto"
+    >
       <div className="container">
         <div className="row">
           {/* About Section */}
@@ -20,22 +23,22 @@ function Footer() {
             <h5>Quick Links</h5>
             <ul className="list-unstyled">
               <li>
-                <a href="#" className="text-light">
+                <a href="#" className="text-muted">
                   Home
                 </a>
               </li>
               <li>
-                <a href="#" className="text-light">
+                <a href="#" className="text-muted">
                   Products
                 </a>
               </li>
               <li>
-                <a href="#" className="text-light">
+                <a href="#" className="text-muted">
                   About
                 </a>
               </li>
               <li>
-                <a href="#" className="text-light">
+                <a href="#" className="text-muted">
                   Contact
                 </a>
               </li>
@@ -46,13 +49,13 @@ function Footer() {
           <div className="col-md-4 mb-3">
             <h5>Follow Us</h5>
             <div>
-              <a href="#" className="text-light me-3">
+              <a href="#" className="text-muted me-3">
                 <i className="fab fa-facebook-f"></i> Facebook
               </a>
-              <a href="#" className="text-light me-3">
+              <a href="#" className="text-muted me-3">
                 <i className="fab fa-twitter"></i> Twitter
               </a>
-              <a href="#" className="text-light">
+              <a href="#" className="text-muted">
                 <i className="fab fa-instagram"></i> Instagram
               </a>
             </div>
@@ -61,7 +64,7 @@ function Footer() {
 
         <div className="row">
           <div className="col text-center mt-3">
-            <p>&copy; 2024 YourCompany. All Rights Reserved.</p>
+            <p>&copy; 2024 Belilah Inc. All Rights Reserved.</p>
           </div>
         </div>
       </div>
