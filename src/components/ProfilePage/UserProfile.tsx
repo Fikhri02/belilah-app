@@ -20,8 +20,30 @@ import { SiTicktick } from "react-icons/si";
 import { GiCancel } from "react-icons/gi";
 
 const getUserData = () => {
-  const user = localStorage.getItem("user");
-  return user ? JSON.parse(user) : null;
+  var user = localStorage.getItem("user");
+
+  var userData = user ? JSON.parse(user) : null;
+
+  if (
+    userData?.addresses == null ||
+    Object.keys(userData?.addresses).length == 0
+  ) {
+    var obj = [
+      {
+        line_1: "",
+        line_2: "",
+        postcode: "",
+        city: "",
+        state: "",
+        country: "",
+      },
+    ];
+    userData.addresses = obj;
+    console.log("in");
+  }
+  console.log("out");
+
+  return userData;
 };
 
 function UserProfile() {
@@ -71,6 +93,16 @@ function UserProfile() {
     // Save the changes to localStorage or send to server here
 
     try {
+      user.cUserId = user.id;
+      setUser({
+        ...user,
+        addresses: [
+          {
+            ...user.addresses[0],
+            isActive: true,
+          },
+        ],
+      });
       const res = await axios.put(
         "http://localhost:8080/api/v1/users/update-user",
         user
@@ -229,6 +261,25 @@ function UserProfile() {
                             {
                               ...user.addresses[0],
                               city: e.target.value,
+                            },
+                          ],
+                        })
+                      }
+                      readOnly={!isEditMode}
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label>State</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={user.addresses?.[0].state}
+                      onChange={(e) =>
+                        setUser({
+                          ...user,
+                          addresses: [
+                            {
+                              ...user.addresses[0],
+                              state: e.target.value,
                             },
                           ],
                         })

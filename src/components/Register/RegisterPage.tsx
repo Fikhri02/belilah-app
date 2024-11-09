@@ -100,19 +100,19 @@ function Register() {
                 />
                 <br />
                 <input
-                  id="phoneNumberInput"
-                  value={phoneNumber}
-                  placeholder="Phone Number"
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  id="lnameInput"
+                  value={lname}
+                  placeholder="Last Name"
+                  onChange={(e) => setLname(e.target.value)}
                   className="form-control form-control-lg"
                   required
                 />
                 <br />
                 <input
-                  id="lnameInput"
-                  value={lname}
-                  placeholder="Last Name"
-                  onChange={(e) => setLname(e.target.value)}
+                  id="phoneNumberInput"
+                  value={phoneNumber}
+                  placeholder="Phone Number"
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                   className="form-control form-control-lg"
                   required
                 />
@@ -176,6 +176,7 @@ function Register() {
                 </div>
                 <button
                   className="btn btn-success"
+                  style={{ width: "100%" }}
                   onClick={() => navigate("/main-menu")}
                 >
                   Close
