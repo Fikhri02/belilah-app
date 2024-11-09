@@ -24,6 +24,7 @@ function Register() {
   const [email, setEmail] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [response, setResponse] = useState(String || null);
@@ -39,6 +40,7 @@ function Register() {
       email: email,
       firstName: fname,
       lastName: lname,
+      phoneNumber: phoneNumber,
       password: password,
       rePassword: rePassword,
     };
@@ -61,17 +63,18 @@ function Register() {
       <div className="w-100 bg-light vh-100">
         <div
           className="w-100 d-flex justify-content-center"
-          style={{ width: "250px", height: "250px" }}
+          style={{ width: "100px", height: "100px" }}
         >
-          <img src="/shoes.svg" alt="Logo" />
-        </div>
-        <div className="w-100 d-flex justify-content-center">
-          <h2 style={{ fontFamily: "Roboto" }}>Let's Get Started</h2>
+          <img src="/src/assets/belilah_logo_final.png" alt="Logo" />
         </div>
         <br />
         <div className="d-flex justify-content-center align-items-center">
           <div className="card " style={{ width: "24rem" }}>
             <div className="card-body">
+              <div className="w-100 d-flex justify-content-center">
+                <h2 style={{ fontFamily: "Roboto" }}>Let's Get Started</h2>
+              </div>
+              <br />
               <div className="w-100 d-flex justify-content-center">
                 {/* <h3 className="card-title">Register</h3> */}
               </div>
@@ -92,6 +95,15 @@ function Register() {
                   value={fname}
                   placeholder="First Name"
                   onChange={(e) => setFname(e.target.value)}
+                  className="form-control form-control-lg"
+                  required
+                />
+                <br />
+                <input
+                  id="phoneNumberInput"
+                  value={phoneNumber}
+                  placeholder="Phone Number"
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                   className="form-control form-control-lg"
                   required
                 />
@@ -141,9 +153,9 @@ function Register() {
               <br />
               <p>
                 Already have an account?{" "}
-                <a>
-                  <Link to="/login">Login</Link>
-                </a>
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  Login
+                </Link>
               </p>
             </div>
           </div>

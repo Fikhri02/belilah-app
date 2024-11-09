@@ -3,6 +3,7 @@ import ListGroup from "./components/ListGroup";
 import Message from "./Message";
 import Alert from "./components/Alert";
 import Homepage from "./components/Homepage/Homepage";
+
 import {
   BrowserRouter as Router,
   Route,
@@ -15,6 +16,9 @@ import CartPage from "./components/CartPage/CartPage";
 import RegisterPage from "./components/Register/RegisterPage";
 import axios from "axios";
 import Item from "./components/ProductCard/Item";
+import CheckoutPage from "./components/CheckoutPage/CheckoutPage";
+import OrderTrackingPage from "./components/OrderTrackingPage/OrderTrackingPage";
+import UserProfile from "./components/ProfilePage/UserProfile";
 function App() {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,6 +64,9 @@ function App() {
           <Route path="/item-details" element={<ItemPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/order-tracking" element={<OrderTrackingPage />} />
+          <Route path="/profile-page" element={<UserProfile />} />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       )}

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { FaCartPlus } from "react-icons/fa";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaCartPlus, FaHeart, FaRegHeart, FaStar } from "react-icons/fa";
 import { CiStar } from "react-icons/ci";
-import { FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 function ProductCard({ item }) {
@@ -18,116 +16,106 @@ function ProductCard({ item }) {
   };
 
   return (
-    // <div className="product-card">
-    //   <div className="product-header">
-    //     <img
-    //       src="https://assets.puma.com/images/195212/01/puma-palermo-leather-sneakers-01.jpg"
-    //       alt="Puma Palermo Leather Sneakers"
-    //     />
-    //     <div className="product-brand">
-    //       <img src="https://assets.puma.com/images/puma-logo.png" alt="Puma" />
-    //       <span>OFFICIAL STORE</span>
-    //     </div>
-    //   </div>
-    //   <div className="product-body">
-    //     <div className="product-offers">
-    //       <button className="offer-button">FREE SHIPPING</button>
-    //       <button className="offer-button">10% CASHBACK</button>
-    //       <button className="offer-button">OCT 15 VOUCHERS</button>
-    //     </div>
-    //     <div className="product-title">
-    //       <span>Mall</span>
-    //       <h2>[NEW] PUMA Unisex Palermo Leather Sneakers...</h2>
-    //     </div>
-    //     <div className="product-actions">
-    //       <button className="action-button" type="button">
-    //         COD
-    //       </button>
-    //       <button className="action-button" type="button">
-    //         Local Seller
-    //       </button>
-    //       <button className="action-button" type="button">
-    //         <i className="fa fa-shopping-cart"></i>
-    //       </button>
-    //     </div>
-    //     <div className="product-price">
-    //       <h3>RM429.00</h3>
-    //     </div>
-    //   </div>
-    <div className="container mt-5">
-      <div className="card" style={{ width: "18rem" }}>
-        <div className="card-body">
-          <div style={{ width: "250px", height: "250px" }} className="bg-light">
-            <img
-              src={item.imageUrl}
-              className="img-fluid"
-              alt="Product Image"
-            />
-          </div>
-          <br />
-          <h4 className="card-title">
-            <a
-              onClick={navToProduct} // No parentheses here
+    <div
+      className="product-card container my-3"
+      style={{
+        width: "18rem",
+        borderRadius: "10px",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        transition: "transform 0.3s",
+        overflow: "hidden",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+    >
+      <div className="card-body">
+        <div
+          style={{
+            width: "250px",
+            height: "250px",
+            backgroundColor: "#f8f8f8",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: "10px",
+          }}
+        >
+          <img src={item.imageUrl} className="img-fluid" alt="Product" />
+        </div>
+        <h4 className="card-title mt-3">
+          <a
+            onClick={navToProduct}
+            style={{
+              color: "#333",
+              textDecoration: "none",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            {item.name}
+          </a>
+        </h4>
+
+        <div className="d-flex align-items-center justify-content-between mt-3">
+          <h4
+            style={{
+              color: "#007bff",
+              fontWeight: "600",
+              fontSize: "1.3rem",
+            }}
+          >
+            RM{" "}
+            {new Intl.NumberFormat("en-MY", {
+              style: "decimal",
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }).format(item.unitPrice)}
+          </h4>
+          <div className="d-flex">
+            <button
               style={{
-                color: "black",
-                textDecoration: "none",
+                background: "none",
+                border: "none",
                 cursor: "pointer",
+                color: "#007bff",
+                marginRight: "8px",
               }}
             >
-              {item.name}
-            </a>
-          </h4>
-          <div className="d-flex align-items-center">
-            <h4 style={{ marginRight: "10px" }}>
-              RM{" "}
-              {new Intl.NumberFormat("en-MY", {
-                style: "decimal",
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              }).format(item.unitPrice)}
-            </h4>
-            <a
-              href="#"
-              //   className="btn btn-primary"
-              style={{ marginRight: "10px" }}
-            >
-              {/* Go somewhere */}
-              <FaCartPlus size={30} />
-            </a>
+              <FaCartPlus size={28} />
+            </button>
             <button
               onClick={handleLikeClick}
               style={{
                 background: "none",
                 border: "none",
                 cursor: "pointer",
-                outline: "none",
                 padding: 0,
-                display: "flex",
-                alignItems: "center",
               }}
             >
               {liked ? (
-                <FaHeart color="red" size={30} /> // Filled heart, red color
+                <FaHeart color="red" size={28} />
               ) : (
-                <FaRegHeart color="black" size={30} /> // Empty heart, black color
+                <FaRegHeart color="black" size={28} />
               )}
             </button>
           </div>
-          <div className="d-flex align-items-center">
-            {Array.from({ length: item.rating }, (_, i) => (
-              <FaStar key={i} color="orange" size={25} />
-            ))}
-            {Array.from({ length: 5 - item.rating }, (_, i) => (
-              <CiStar key={i} color="orange" size={30} />
-            ))}
-            <p style={{ marginLeft: "10px", marginTop: "20px", color: "gray" }}>
-              ({convertToK(item.ratingCounts)})
-            </p>
-          </div>
+        </div>
+
+        <hr style={{ borderTop: "1px solid #ddd" }} />
+
+        <div className="d-flex align-items-center">
+          {Array.from({ length: item.rating }, (_, i) => (
+            <FaStar key={i} color="orange" size={20} />
+          ))}
+          {Array.from({ length: 5 - item.rating }, (_, i) => (
+            <CiStar key={i} color="orange" size={20} />
+          ))}
+          <p style={{ marginLeft: "10px", color: "gray" }}>
+            ({convertToK(item.ratingCounts)})
+          </p>
         </div>
       </div>
     </div>
-    // </div>
   );
 }
 

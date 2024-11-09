@@ -1,0 +1,20 @@
+.card {
+    border-radius: 10px;
+  }
+  
+  .card-body {
+    padding: 3rem;
+  }
+  
+  .text-muted {
+    font-size: 1.1rem;
+  }
+  
+  .mb-3 {
+    margin-bottom: 1.5rem;
+  }
+  
+  button {
+    width: 48%;
+  }
+  

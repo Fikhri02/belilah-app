@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
 import Footer from "../Footer/Footer";
 
@@ -8,7 +8,7 @@ function Homepage() {
   return (
     <>
       <div className="d-flex flex-column min-vh-100">
-        {/* <NavBar /> */}
+        <NavBar />
         <Login />
         <Footer />
       </div>
@@ -102,6 +102,12 @@ function Login() {
                 <h6 style={{ color: "red" }}>{response}</h6>
               </div>
             )}
+            <p>
+              Sign up instead:{" "}
+              <Link to="/register" style={{ textDecoration: "none" }}>
+                Register
+              </Link>
+            </p>
           </div>
         </div>
       </div>
