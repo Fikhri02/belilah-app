@@ -189,14 +189,14 @@ function ItemMainContainer({ item }) {
         {modal && (
           <Popup
             type="success"
-            message="Successfully submitted order."
+            message="Successfully add to cart."
             onClose={() => setModal(false)}
           />
         )}
         {failedModal && (
           <Popup
             type="danger"
-            message="Failed to submit order. Please retry."
+            message="Failed to add to cart. Please retry."
             onClose={() => setFailedModal(false)}
           />
         )}
