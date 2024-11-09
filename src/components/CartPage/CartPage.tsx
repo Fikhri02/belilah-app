@@ -69,9 +69,13 @@ const Cart = () => {
   // Handle quantity change
   const handleQuantityChange = (id: number, newQuantity: number) => {
     setCartItems((prevItems) =>
-      prevItems.map((item, index) =>
-        index === id ? new CartItems(newQuantity, item.item) : item
-      )
+      // prevItems.map((item, index) =>
+      //   index === id ? new CartItems(newQuantity, item.item) : item
+      // )
+      prevItems.map((item) =>
+        item.item.id === id
+          ? new CartItems(item.id, newQuantity, item.item)
+            : item)
     );
   };
   // Handle item removal
@@ -153,8 +157,8 @@ const Cart = () => {
                           className="form-control"
                           onChange={(e) =>
                             handleQuantityChange(
-                              item.id,
-                              parseInt(e.target.value)
+                              item.item.id,
+                              parseInt(e.target.value) || 1
                             )
                           }
                         />
